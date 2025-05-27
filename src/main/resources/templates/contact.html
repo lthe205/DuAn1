@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Liên hệ - Luxury Wallet</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+     <style>
+        body {
+            font-family: 'Arial', sans-serif; /* Consistent font */
+            background-color: #f8f9fa; /* Light background */
+            padding-top: 70px; /* Add padding equal to navbar height */
+        }
+        .navbar {
+            background-color: #212529; /* Darker navbar */
+            padding: 1rem 1.5rem;
+        }
+        .navbar-brand {
+            color: #fff !important;
+            font-size: 1.6rem;
+            font-weight: bold;
+        }
+        .nav-link {
+            color: #adb5bd !important; /* Lighter nav links */
+            margin: 0 0.8rem;
+            transition: color 0.3s ease;
+        }
+        .nav-link:hover {
+             color: #fff !important;
+        }
+         .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2rem;
+            color: #343a40;
+            font-weight: bold;
+        }
+        /* New/Improved Styles for Contact page */
+        .contact-section {
+            padding: 80px 0;
+            background-color: #f8f9fa;
+        }
+        .contact-form-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .contact-info h5 {
+             margin-bottom: 15px;
+             color: #343a40;
+        }
+        .contact-info p {
+            margin-bottom: 10px;
+            color: #555;
+        }
+        .contact-info i {
+            margin-right: 10px;
+            color: #007bff; /* Icon color */
+        }
+        .footer {
+            background-color: #212529; /* Darker footer */
+            color: #adb5bd;
+            padding: 3rem 0;
+            margin-top: 4rem;
+        }
+         .footer h5 {
+             color: #fff;
+             margin-bottom: 1.5rem;
+         }
+         .footer a {
+             color: #adb5bd;
+             text-decoration: none;
+             transition: color 0.3s ease;
+         }
+         .footer a:hover {
+             color: #fff;
+         }
+         .footer .social-icons a {
+             font-size: 1.5rem;
+             margin-right: 15px;
+         }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="/home">Luxury Wallet</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/home">Trang chủ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/home#featured-products">Sản phẩm</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/about">Về chúng tôi</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/contact">Liên hệ</a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <a class="nav-link me-3" href="#"><i class="fas fa-shopping-cart"></i> Giỏ hàng</a>
+
+                    <!-- User Dropdown -->
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user"></i> Tài khoản
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
+                            <li th:if="${session.user != null and session.user.role == 'ADMIN'}">
+                                <a class="dropdown-item" th:href="@{/admin}">
+                                    <i class="fas fa-cogs fa-fw me-2"></i> Quản trị
+                                </a>
+                            </li>
+                            <li th:if="${session.user != null}">
+                                <a class="dropdown-item" th:href="@{/account}">
+                                     <i class="fas fa-user fa-fw me-2"></i> Tài khoản của tôi
+                                </a>
+                            </li>
+                             <li th:unless="${session.user}">
+                                <a class="dropdown-item" th:href="@{/login}">
+                                     <i class="fas fa-sign-in-alt fa-fw me-2"></i> Đăng nhập
+                                </a>
+                            </li>
+                            <li th:unless="${session.user}">
+                                <a class="dropdown-item" th:href="@{/register}">
+                                     <i class="fas fa-user-plus fa-fw me-2"></i> Đăng ký
+                                </a>
+                            </li>
+                            <li th:if="${session.user != null}"><hr class="dropdown-divider"></li>
+                            <li th:if="${session.user != null}">
+                                <a class="dropdown-item" th:href="@{/logout}">
+                                    <i class="fas fa-sign-out-alt fa-fw me-2"></i> Đăng xuất
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contact Section -->
+     <section id="contact" class="contact-section">
+        <div class="container">
+             <h2 class="section-title">Liên hệ</h2>
+            <div class="row">
+                <div class="col-md-8 mx-auto contact-form-container">
+                   <!-- Alert Messages -->
+                   <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+                       <span th:text="${success}"></span>
+                       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                   </div>
+                   <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                       <span th:text="${error}"></span>
+                       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                   </div>
+                   <!-- Contact Form -->
+                   <form th:action="@{/contact/send}" method="post">
+                       <div class="mb-3">
+                           <label for="name" class="form-label">Tên của bạn</label>
+                           <input type="text" class="form-control" id="name" name="name" required>
+                       </div>
+                        <div class="mb-3">
+                           <label for="email" class="form-label">Email</label>
+                           <input type="email" class="form-control" id="email" name="email" required>
+                       </div>
+                        <div class="mb-3">
+                           <label for="message" class="form-label">Tin nhắn</label>
+                           <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+                       </div>
+                       <button type="submit" class="btn btn-primary">Gửi tin nhắn</button>
+                   </form>
+                </div>
+                 <!-- Optional: Add Contact Info Block -->
+                 <div class="col-md-4 contact-info d-none d-md-block">
+                     <h5>Thông tin liên hệ</h5>
+                     <p><i class="fas fa-map-marker-alt"></i> 123 Đường Thời Trang, Quận Đẹp Trai, TP.HCM</p>
+                     <p><i class="fas fa-phone"></i> 090-123-4567</p>
+                     <p><i class="fas fa-envelope"></i> info@luxurywallet.com</p>
+                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>Luxury Wallet</h5>
+                    <p>Chuyên cung cấp các sản phẩm ví nam cao cấp, chất lượng.</p>
+                     <div class="social-icons">
+                         <a href="#" class="text-white me-3"><i class="fab fa-facebook"></i></a>
+                         <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+                         <a href="#" class="text-white"><i class="fab fa-twitter"></i></a>
+                     </div>
+                </div>
+                <div class="col-md-4">
+                    <h5>Liên kết nhanh</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="/home" class="text-white">Trang chủ</a></li>
+                        <li><a href="/home#featured-products" class="text-white">Sản phẩm</a></li>
+                        <li><a href="/about" class="text-white">Về chúng tôi</a></li>
+                        <li><a href="/contact" class="text-white">Liên hệ</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Thông tin liên hệ</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Đường Thời Trang, Quận Đẹp Trai, TP.HCM</li>
+                        <li><i class="fas fa-phone"></i> 090-123-4567</li>
+                        <li><i class="fas fa-envelope"></i> info@luxurywallet.com</li>
+                    </ul>
+                </div>
+            </div>
+             <div class="text-center mt-4">
+                 <p>&copy; 2023 Luxury Wallet. All rights reserved.</p>
+             </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> 
