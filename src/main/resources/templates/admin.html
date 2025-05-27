@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Trang quản trị - Luxury Wallet</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .admin-container {
+            margin-top: 0;
+        }
+        .sidebar {
+            background-color: #212529; /* Darker sidebar */
+            color: white;
+            padding: 20px;
+            min-height: 100vh; /* Full height sidebar */
+        }
+        .sidebar a {
+            color: #adb5bd; /* Lighter text color */
+            text-decoration: none;
+            display: block;
+            padding: 12px 0;
+            border-radius: 5px;
+            margin-bottom: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .sidebar a:hover,
+        .sidebar a.active {
+            background-color: #343a40; /* Highlight on hover/active */
+            color: white;
+        }
+        .sidebar .nav-link i {
+            margin-right: 10px;
+        }
+        .content {
+            padding: 30px;
+        }
+         .dashboard-card {
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+         .dashboard-card .card-body {
+             padding: 25px;
+         }
+         .dashboard-card h5 {
+             color: #5a6268;
+             font-size: 1rem;
+             margin-bottom: 15px;
+         }
+          .dashboard-card .display-4 {
+              font-size: 2.5rem;
+              font-weight: bold;
+          }
+    </style>
+</head>
+<body>
+    <div class="container-fluid admin-container">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block sidebar collapse">
+                <div class="position-sticky pt-3">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" th:classappend="${currentSection == 'dashboard' ? 'active' : ''}" th:href="@{/admin(section='dashboard')}">
+                                <i class="fas fa-tachometer-alt"></i> Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:classappend="${currentSection == 'users' ? 'active' : ''}" th:href="@{/admin(section='users')}">
+                                <i class="fas fa-users"></i> Quản lý người dùng
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="fas fa-boxes"></i> Quản lý sản phẩm
+                            </a>
+                        </li>
+                         <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="fas fa-shopping-bag"></i> Quản lý đơn hàng
+                            </a>
+                        </li>
+                    </ul>
+
+                    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                        <span>Cài đặt</span>
+                    </h6>
+                    <ul class="nav flex-column mb-2">
+                        <li class="nav-item">
+                             <a class="nav-link" th:href="@{/home}">
+                                <i class="fas fa-home"></i> Về trang chủ
+                            </a>
+                        </li>
+                         <li class="nav-item">
+                            <a class="nav-link" th:href="@{/logout}">
+                                <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- Main Content -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 content">
+                <div th:if="${currentSection == 'dashboard'}">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2">Dashboard</h1>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-4 col-md-6">
+                            <div class="card dashboard-card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Tổng doanh thu</h5>
+                                    <p class="card-text display-4">50.000.000đ</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6">
+                            <div class="card dashboard-card">
+                                 <div class="card-body">
+                                    <h5 class="card-title">Tổng đơn hàng</h5>
+                                    <p class="card-text display-4">150</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6">
+                            <div class="card dashboard-card">
+                                 <div class="card-body">
+                                    <h5 class="card-title">Tổng người dùng</h5>
+                                    <p class="card-text display-4" th:text="${#lists.size(allUsers)}">100</p>
+                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div th:if="${currentSection == 'users'}">
+                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2">Quản lý người dùng</h1>
+                    </div>
+
+                     <div th:if="${allUsers}">
+                         <table class="table table-striped table-sm">
+                             <thead>
+                                 <tr>
+                                     <th>ID</th>
+                                     <th>Username</th>
+                                     <th>Email</th>
+                                     <th>Họ và tên</th>
+                                     <th>Vai trò</th>
+                                     <th>Trạng thái</th>
+                                     <th>Hành động</th>
+                                 </tr>
+                             </thead>
+                             <tbody>
+                                 <tr th:each="user : ${allUsers}">
+                                     <td th:text="${user.id}"></td>
+                                     <td th:text="${user.username}"></td>
+                                     <td th:text="${user.email}"></td>
+                                     <td th:text="${user.fullName}"></td>
+                                     <td th:text="${user.role}"></td>
+                                     <td th:text="${user.enabled ? 'Hoạt động' : 'Bị khóa'}"></td>
+                                     <td>
+                                         <a th:href="@{/admin/users/edit/{id}(id=${user.id})}" class="btn btn-sm btn-info"><i class="fas fa-edit"></i> Sửa</a>
+                                         <a th:href="@{/admin/users/delete/{id}(id=${user.id})}" class="btn btn-sm btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa người dùng này?');"><i class="fas fa-trash-alt"></i> Xóa</a>
+                                     </td>
+                                 </tr>
+                             </tbody>
+                         </table>
+                     </div>
+                     <div th:unless="${allUsers}">
+                         <p>Không có người dùng nào trong hệ thống.</p>
+                     </div>
+                </div>
+
+                <!-- Other management sections can be added here -->
+
+            </main>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> 
